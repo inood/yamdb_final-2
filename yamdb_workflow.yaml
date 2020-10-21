@@ -1,4 +1,4 @@
-name: YaMDB-final workflow
+name: yamdb
 
 on: [push]
 
@@ -57,7 +57,7 @@ jobs:
           script: |
             sudo docker pull tolshin/yamdb_final
             sudo docker stop $(sudo docker ps -a -q)
-            sudo docker run --rm -d -p 80:1337 tolshin/yamdb_final
+            sudo docker run --rm -d -p 1337:1337 tolshin/yamdb_final
 
   send_message:
     runs-on: ubuntu-latest
