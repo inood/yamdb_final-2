@@ -64,7 +64,8 @@ jobs:
   send_message:
     name: Send message to Telegram
     runs-on: ubuntu-latest
-    needs: deploy
+    # needs: deploy
+    needs: push_to_docker_hub
     steps:
       - name: send message
         uses: appleboy/telegram-action@master
