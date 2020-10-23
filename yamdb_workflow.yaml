@@ -4,10 +4,12 @@ on: [push]
 
 jobs:
   tests:
+    name: Test with flake8 and pytest
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
+    
     - name: Set up Python 
       uses: actions/setup-python@v2
       with:
@@ -44,6 +46,7 @@ jobs:
           tag_with_ref: true
 
   deploy:
+    name: Deploy on server
     runs-on: ubuntu-latest
     needs: push_to_docker_hub
     steps:
@@ -53,13 +56,14 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }} # если ваш ssh-ключ защищен фразой-паролем
+          passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            sudo docker pull tolshin/yamdb_final
-            sudo docker stop $(sudo docker ps -a -q)
-            sudo docker run --rm -d -p 1337:1337 tolshin/yamdb_final
+            cd yamdb
+            sudo docker-compose pull web
+            sudo docker-compose up --force-recreate -d web
 
   send_message:
+    name: Send message to Telegram
     runs-on: ubuntu-latest
     needs: deploy
     steps:

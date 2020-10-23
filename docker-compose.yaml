@@ -29,7 +29,7 @@ services:
     build: ./nginx
     volumes:
       - static_volume:/code/static
-    ports:
-      - 1337:80
+    # ports:
+    #   - 1337:80
     depends_on:
       - web
